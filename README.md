@@ -229,4 +229,5 @@ reqmaster/
 - 项目维护者：[ywk]
 - 邮箱：[y2960220863@163.com]
 
-- 项目仓库：[仓库地址]
+- 项目仓库：[https://github.com/yangwuke/reqmaster]
+
