@@ -1,0 +1,68 @@
+2025-10-21 18:31:59 [ReqMasterHikariPool housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - ReqMasterHikariPool - Thread starvation or clock leap detected (housekeeper delta=11m46s702ms54µs100ns).
+2025-10-21 19:17:09 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        projects p1_0
+2025-10-21 19:17:09 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        requirements r1_0
+2025-10-21 19:17:09 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        count(*) 
+    from
+        chat_sessions cs1_0
+2025-10-21 19:17:09 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_analyzed,
+        r1_0.metadata,
+        r1_0.priority,
+        r1_0.project_id,
+        r1_0.source_type,
+        r1_0.title,
+        r1_0.type,
+        r1_0.updated_at 
+    from
+        requirements r1_0 
+    where
+        r1_0.type=?
+2025-10-21 19:17:09 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_analyzed,
+        r1_0.metadata,
+        r1_0.priority,
+        r1_0.project_id,
+        r1_0.source_type,
+        r1_0.title,
+        r1_0.type,
+        r1_0.updated_at 
+    from
+        requirements r1_0 
+    where
+        r1_0.type=?
+2025-10-21 19:17:09 [http-nio-8080-exec-7] DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.is_analyzed,
+        r1_0.metadata,
+        r1_0.priority,
+        r1_0.project_id,
+        r1_0.source_type,
+        r1_0.title,
+        r1_0.type,
+        r1_0.updated_at 
+    from
+        requirements r1_0 
+    where
+        r1_0.type=?
+2025-10-21 19:17:09 [http-nio-8080-exec-7] INFO  c.reqmaster.service.DashboardService - 仪表板数据查询完成

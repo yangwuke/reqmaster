@@ -1,0 +1,127 @@
+# 应用配置
+spring:
+  application:
+    name: ReqMaster
+
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/reqmaster?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
+    username: root
+    password: 12345678
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  # 开发配置
+  devtools:
+    restart:
+      enabled: true
+
+  # 分页配置
+  data:
+    web:
+      pageable:
+        default-page-size: 20
+        max-page-size: 100
+        page-parameter: page
+        size-parameter: size
+
+  # ========== 第四步新增的静态资源配置 ==========
+  web:
+    resources:
+      static-locations: classpath:/static/,classpath:/templates/
+  # Thymeleaf配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /reqmaster
+    # 添加欢迎页面配置
+    welcome-page: index.html
+  error:
+    include-stacktrace: always
+    include-message: always
+    include-binding-errors: always
+
+# 日志配置
+logging:
+  level:
+    com.reqmaster: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/reqmaster.log
+
+# Swagger配置
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    groups-order: asc
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+
+# 大模型配置
+llm:
+  # DeepSeek配置
+  deepseek:
+    api-key: ${DEEPSEEK_API_KEY:sk-8383256df094439382c4f163ab681f4c}
+    url: https://api.deepseek.com/v1/chat/completions
+    model: deepseek-chat
+    max-tokens: 4000
+    temperature: 0.3
+
+  # 通义千问配置
+  tongyi:
+    api-key: ${TONGYI_API_KEY:LTAI5tE393xR6BPqyib2WfLG}
+    url: https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation
+    model: qwen-turbo
+    max-tokens: 2000
+    temperature: 0.3
+
+  # 豆包配置（示例，根据实际API调整）
+  doubao:
+    api-key: ${DOUBAO_API_KEY:2f091c4e-33e8-4e40-959b-5295e4fa9017}
+    url: https://open.bytegpt.com/api/v1/chat/completions
+    model: doubao-pro
+    max-tokens: 4000
+    temperature: 0.3
+
+# 大模型服务配置
+ai:
+  service:
+    default-provider: deepseek  # 默认使用DeepSeek
+    timeout: 30000              # 30秒超时
+    retry-count: 3              # 重试次数

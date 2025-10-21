@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReqMaster - 智能需求分析平台</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 2rem 0;
+        }
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .status-success { color: #28a745; }
+        .status-error { color: #dc3545; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>ReqMaster</h1>
+        <p>智能需求分析与管理平台 - 基于大模型的现代化需求工程解决方案</p>
+    </header>
+
+    <div class="dashboard">
+        <div class="card">
+            <h3>系统概览</h3>
+            <div class="stats">
+                <div>
+                    <span class="stat-number" id="projectCount">0</span>
+                    <span class="stat-label">项目数量</span>
+                </div>
+                <div>
+                    <span class="stat-number" id="requirementCount">0</span>
+                    <span class="stat-label">需求数量</span>
+                </div>
+                <div>
+                    <span class="stat-number" id="sessionCount">0</span>
+                    <span class="stat-label">对话会话</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>快速开始</h3>
+            <p>选择以下功能开始使用 ReqMaster：</p>
+            <div style="margin-top: 1rem;">
+                <a href="/reqmaster/swagger-ui.html" class="btn" target="_blank">API 文档</a>
+                <button class="btn btn-secondary" onclick="createSampleProject()">创建示例项目</button>
+                <button class="btn" onclick="testAllAPIs()">全面功能测试</button>
+            </div>
+        </div>
+    </div>
+
+    <h2>核心功能</h2>
+    <div class="features">
+        <div class="feature-card">
+            <h3>📝 智能需求分析</h3>
+            <p>使用AI技术自动分析和整理需求，识别矛盾和不完整之处</p>
+        </div>
+        <div class="feature-card">
+            <h3>🔍 文档解析</h3>
+            <p>自动解析Word、PDF等格式的需求文档，提取结构化信息</p>
+        </div>
+        <div class="feature-card">
+            <h3>💬 智能对话</h3>
+            <p>与AI需求分析师进行自然语言对话，澄清需求细节</p>
+        </div>
+        <div class="feature-card">
+            <h3>📊 用户故事生成</h3>
+            <p>自动生成符合INVEST原则的用户故事和验收标准</p>
+        </div>
+        <div class="feature-card">
+            <h3>✅ 一致性检查</h3>
+            <p>检测需求之间的逻辑矛盾和依赖关系</p>
+        </div>
+        <div class="feature-card">
+            <h3>📈 需求管理</h3>
+            <p>完整的项目管理、需求跟踪和版本控制</p>
+        </div>
+    </div>
+
+    <div id="testResult" style="margin-top: 20px;"></div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <h3>开发接口</h3>
+        <p>使用以下链接访问系统的REST API接口：</p>
+        <div>
+            <a href="/reqmaster/swagger-ui.html" class="btn" target="_blank">Swagger UI</a>
+            <a href="/reqmaster/api-docs" class="btn btn-secondary" target="_blank">OpenAPI 规范</a>
+            <a href="/reqmaster/api/projects" class="btn" target="_blank">项目管理API</a>
+        </div>
+    </div>
+
+    <footer style="text-align: center; margin-top: 3rem; padding: 2rem 0; color: #666; border-top: 1px solid #e9ecef;">
+        <p>ReqMaster &copy; 2024 - 智能需求分析平台 | 基于Spring Boot和DeepSeek等大模型技术</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+            技术栈: Java 17, Spring Boot 3, MySQL, Redis, DeepSeek API
+        </p>
+    </footer>
+</div>
+
+<script>
+    // 加载仪表板数据
+    async function loadDashboardData() {
+        try {
+            const response = await fetch('/reqmaster/api/dashboard');
+            const data = await response.json();
+
+            if (data.success) {
+                const dashboard = data.data;
+                document.getElementById('projectCount').textContent = dashboard.totalProjects || 0;
+                document.getElementById('requirementCount').textContent = dashboard.totalRequirements || 0;
+                document.getElementById('sessionCount').textContent = dashboard.totalChatSessions || 0;
+            }
+        } catch (error) {
+            console.log('仪表板数据加载失败，系统可能还没有数据');
+        }
+    }
+
+    // 创建示例项目
+    async function createSampleProject() {
+        const resultDiv = document.getElementById('testResult');
+        try {
+            resultDiv.innerHTML = '<div class="card">正在创建示例项目...</div>';
+
+            const response = await fetch('/reqmaster/api/projects', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: '智能电商平台示例',
+                    description: '这是一个示例电商平台项目，用于演示ReqMaster的功能',
+                    domain: '电商'
+                })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                resultDiv.innerHTML =
+                    `<div class="card status-success">
+                            <h3>✅ 示例项目创建成功！</h3>
+                            <p>项目ID: ${data.data.id}</p>
+                            <p>项目名称: ${data.data.name}</p>
+                            <p>现在您可以开始体验ReqMaster的各项功能</p>
+                         </div>`;
+                loadDashboardData(); // 刷新数据
+            } else {
+                resultDiv.innerHTML =
+                    `<div class="card status-error">
+                            <h3>❌ 创建失败</h3>
+                            <p>错误信息: ${data.message}</p>
+                         </div>`;
+            }
+        } catch (error) {
+            resultDiv.innerHTML =
+                `<div class="card status-error">
+                        <h3>❌ 请求失败</h3>
+                        <p>异常信息: ${error}</p>
+                     </div>`;
+        }
+    }
+
+    // 全面功能测试
+    async function testAllAPIs() {
+        const resultDiv = document.getElementById('testResult');
+        resultDiv.innerHTML = '<div class="card">开始全面功能测试...</div>';
+
+        const tests = [
+            { name: '健康检查', url: '/reqmaster/actuator/health', method: 'GET' },
+            { name: '项目列表', url: '/reqmaster/api/projects', method: 'GET' },
+            { name: '创建项目', url: '/reqmaster/api/projects', method: 'POST',
+                body: { name: '测试项目-' + Date.now(), description: '功能测试', domain: '测试' }},
+            { name: '仪表板数据', url: '/reqmaster/api/dashboard', method: 'GET' }
+        ];
+
+        let results = [];
+
+        for (const test of tests) {
+            try {
+                const options = {
+                    method: test.method,
+                    headers: { 'Content-Type': 'application/json' }
+                };
+
+                if (test.body) {
+                    options.body = JSON.stringify(test.body);
+                }
+
+                const response = await fetch(test.url, options);
+                const data = await response.ok ? await response.json() : null;
+
+                results.push({
+                    name: test.name,
+                    success: response.ok,
+                    status: response.status
+                });
+
+                resultDiv.innerHTML =
+                    `<div class="card">
+                            <h3>功能测试进度</h3>
+                            <ul>
+                                ${results.map(r =>
+                        `<li>${r.name}: ${r.success ? '✅ 成功' : '❌ 失败'} (${r.status})</li>`
+                    ).join('')}
+                            </ul>
+                         </div>`;
+
+            } catch (error) {
+                results.push({
+                    name: test.name,
+                    success: false,
+                    status: 'ERROR'
+                });
+            }
+        }
+
+        const allPassed = results.every(r => r.success);
+        resultDiv.innerHTML +=
+            `<div class="card ${allPassed ? 'status-success' : 'status-error'}">
+                    <h3>${allPassed ? '🎉 所有功能测试通过！' : '⚠️ 部分功能测试失败'}</h3>
+                    <p>共测试 ${results.length} 个接口，${results.filter(r => r.success).length} 个成功</p>
+                 </div>`;
+    }
+
+    // 页面加载时执行
+    document.addEventListener('DOMContentLoaded', function() {
+        loadDashboardData();
+    });
+</script>
+</body>
+</html>

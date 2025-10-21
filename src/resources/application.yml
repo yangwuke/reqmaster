@@ -1,0 +1,87 @@
+# 应用与服务器配置
+spring:
+  application:
+    name: ReqMaster
+
+  # 数据源配置（修复URL参数，移除环境变量避免解析问题）
+  datasource:
+    url: jdbc:mysql://localhost:3306/reqmaster?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root                    # 开发环境直接指定账号，生产环境可改回环境变量
+    password: 12345678                # 开发环境直接指定密码，生产环境可改回环境变量
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    # HikariCP 连接池配置（保持原配置不变）
+    hikari:
+      pool-name: ReqMasterHikariPool
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000      # 30秒
+      idle-timeout: 600000           # 10分钟
+      max-lifetime: 1800000          # 30分钟
+      auto-commit: true
+      validation-timeout: 5000
+
+  # JPA/Hibernate 配置（更新方言，移除过时配置）
+  jpa:
+    hibernate:
+      ddl-auto: update   # 开发用 update，生产建议改为 none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect  # 修复过时的 MySQL8Dialect
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+  # 文件上传配置（保持原配置不变）
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      file-size-threshold: 2KB
+      location: /tmp
+
+  # 开发工具（仅开发环境生效，保持不变）
+  devtools:
+    restart:
+      enabled: true
+
+# 服务器配置（保持原配置不变）
+server:
+  port: 8080
+  servlet:
+    context-path: /reqmaster   # 可通过 Nginx 反向代理映射 /reqmaster → /，后端仍可用 /
+
+# 日志配置（保持原配置不变）
+logging:
+  level:
+    com.reqmaster: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: ${LOG_PATH:logs}/reqmaster.log   # 默认 logs/，可通过 LOG_PATH 环境变量指定路径
+
+# Swagger API 文档配置（SpringDoc，保持原配置不变）
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    enabled: ${SWAGGER_ENABLED:true}  # 生产环境可通过环境变量设为 false
+
+# Actuator 监控（可选，保持原配置不变）
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always

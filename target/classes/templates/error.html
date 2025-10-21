@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ReqMaster - 错误页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .error { color: #d32f2f; background: #ffebee; padding: 20px; border-radius: 5px; }
+        .info { color: #1976d2; background: #e3f2fd; padding: 15px; border-radius: 5px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<h1>ReqMaster - 系统暂时不可用</h1>
+<div class="error">
+    <h3>错误信息：系统内部错误</h3>
+    <p>我们正在努力修复这个问题，请稍后再试。</p>
+</div>
+<div class="info">
+    <h4>您可以尝试：</h4>
+    <ul>
+        <li><a href="/reqmaster/swagger-ui.html">访问API文档</a></li>
+        <li><a href="/reqmaster/actuator/health">查看系统健康状态</a></li>
+        <li>检查数据库连接配置</li>
+    </ul>
+</div>
+</body>
+</html>

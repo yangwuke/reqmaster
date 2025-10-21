@@ -1,0 +1,133 @@
+### 创建项目
+POST http://localhost:8080/reqmaster/api/projects
+Content-Type: application/json
+
+{
+  "name": "测试API项目",
+  "description": "这是通过API创建的项目",
+  "domain": "测试"
+}
+
+### 获取所有项目
+GET http://localhost:8080/reqmaster/api/projects
+
+### 分页获取项目
+GET http://localhost:8080/reqmaster/api/projects/page?page=0&size=10
+
+### 根据ID获取项目
+GET http://localhost:8080/reqmaster/api/projects/1
+
+### 更新项目
+PUT http://localhost:8080/reqmaster/api/projects/1
+Content-Type: application/json
+
+{
+  "name": "更新后的项目名称",
+  "description": "更新后的描述",
+  "domain": "电商"
+}
+
+### 搜索项目
+GET http://localhost:8080/reqmaster/api/projects/search?keyword=电商
+
+### 创建需求
+POST http://localhost:8080/reqmaster/api/requirements
+Content-Type: application/json
+
+{
+  "title": "API测试需求",
+  "description": "这是通过API创建的需求",
+  "type": "FUNCTIONAL",
+  "priority": "HIGH",
+  "projectId": 1
+}
+
+### 获取所有需求
+GET http://localhost:8080/reqmaster/api/requirements
+
+### 根据项目获取需求
+GET http://localhost:8080/reqmaster/api/requirements/project/1
+
+### 根据类型获取需求
+GET http://localhost:8080/reqmaster/api/requirements/type/FUNCTIONAL
+
+### 搜索需求
+GET http://localhost:8080/reqmaster/api/requirements/search?keyword=搜索
+
+### 获取项目统计
+GET http://localhost:8080/reqmaster/api/projects/stats
+
+### 获取需求统计
+GET http://localhost:8080/reqmaster/api/requirements/project/1/stats
+
+### ========== 第三步新增的AI功能测试 ==========
+
+### 智能解析文档
+POST http://localhost:8080/reqmaster/api/ai/requirements/parse-document
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="requirements.docx"
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+< ./sample_requirements.docx
+--WebAppBoundary
+Content-Disposition: form-data; name="projectId"
+
+1
+--WebAppBoundary--
+
+### 生成用户故事
+GET http://localhost:8080/reqmaster/api/ai/requirements/1/user-stories
+
+### 检查需求一致性
+GET http://localhost:8080/reqmaster/api/ai/requirements/project/1/consistency
+
+### 分析需求完整性
+GET http://localhost:8080/reqmaster/api/ai/requirements/1/completeness
+
+### 智能对话分析
+POST http://localhost:8080/reqmaster/api/ai/requirements/project/1/chat?question=这个项目的主要风险点有哪些？
+
+### ========== 第四步新增的对话和仪表板测试 ==========
+
+### 创建对话会话
+POST http://localhost:8080/reqmaster/api/chat/sessions
+Content-Type: application/json
+
+{
+  "projectId": 1,
+  "title": "需求分析会话",
+  "sessionType": "REQUIREMENT_ANALYSIS"
+}
+
+### 发送消息
+POST http://localhost:8080/reqmaster/api/chat/sessions/1/messages
+Content-Type: application/json
+
+{
+  "message": "你好，请帮我分析一下电商平台的用户注册功能需求"
+}
+
+### 获取会话消息
+GET http://localhost:8080/reqmaster/api/chat/sessions/1/messages
+
+### 获取项目对话会话
+GET http://localhost:8080/reqmaster/api/chat/projects/1/sessions
+
+### 更新会话标题
+PUT http://localhost:8080/reqmaster/api/chat/sessions/1/title
+Content-Type: application/json
+
+{
+  "title": "更新后的会话标题"
+}
+
+### 获取系统仪表板数据
+GET http://localhost:8080/reqmaster/api/dashboard
+
+### 获取项目仪表板数据
+GET http://localhost:8080/reqmaster/api/dashboard/projects/1
+
+### 访问首页
+GET http://localhost:8080/reqmaster/

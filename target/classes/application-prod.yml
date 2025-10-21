@@ -1,0 +1,68 @@
+# 生产环境配置
+
+spring:
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/reqmaster?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: validate  # 生产环境使用validate
+    show-sql: false
+
+  # 静态资源缓存
+  web:
+    resources:
+      cache:
+        period: 3600  # 1小时缓存
+
+  # Thymeleaf缓存
+  thymeleaf:
+    cache: true
+
+# 日志配置
+logging:
+  level:
+    com.reqmaster: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: /app/logs/reqmaster.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+
+# 大模型配置（通过环境变量注入）
+llm:
+  deepseek:
+    api-key: ${DEEPSEEK_API_KEY}
+    url: https://api.deepseek.com/v1/chat/completions
+    model: deepseek-chat
+    max-tokens: 4000
+    temperature: 0.3
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /reqmaster
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+
+# Actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+      show-components: when_authorized
